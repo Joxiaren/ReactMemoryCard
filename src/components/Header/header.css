@@ -1,0 +1,9 @@
+header{
+    background-color: var(--main-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    font-size: 3em;
+    padding-left: 10%;
+}

@@ -1,0 +1,7 @@
+:root{
+    --main-color: rgb(33, 47, 65);
+    --back-color: rgb(27, 34, 53);
+    --light-color: rgb(143, 98, 0);
+    --transparent-color: rgba(0,0,0,0.7);
+    --transparent-color-hover: rgba(0,0,0,0.5);
+}
