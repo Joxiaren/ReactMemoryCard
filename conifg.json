@@ -1,0 +1,4 @@
+{
+    "localApiAddress": "http://localhost:3000",
+    "apiAddress" : "https://joxi-react-memory-card.onrender.com"
+}
