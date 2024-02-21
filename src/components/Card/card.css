@@ -1,3 +1,8 @@
+:root{
+    --card-x: 300px;
+    --card-y: 200px;
+}
+
 .card-container{
     cursor:pointer;
     perspective-origin: center;
@@ -5,8 +10,8 @@
 }
 
 .card{
-    height: 250px;
-    width: 150px;
+    height: var(--card-x);
+    width: var(--card-y);
     margin: 10px;
     
     border: solid 5px black;
@@ -14,8 +19,6 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    /* animation: rotate 2s infinite;
-    animation-timing-function: linear; */
     
     transition: transform 0.5s;
     
@@ -25,21 +28,13 @@
 
 }
 .card-container:hover>.card{
-    transform: rotateY(180deg);
-}
-@keyframes rotate{
-    0%{
-        transform: rotateY(0deg);
-    }
-    100%{
-        transform: rotateY(360deg);
-    }
+    transform: translateZ(50px);
 }
 
 img{
     position: absolute;
-    height: 250px;
-    width: 150px;
+    height: var(--card-x);
+    width: var(--card-y);
     object-fit:cover;   
 }
 .card-name{
@@ -47,7 +42,8 @@ img{
     background-color: rgba(0,0,0,0.7);
     width: 100%;
     padding: 10px 3px;
-
+    font-family: 'DSFont', Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1.3em;
     text-align: center;
 
     transform: translateZ(0.03px);
