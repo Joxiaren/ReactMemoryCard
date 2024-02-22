@@ -1,6 +1,6 @@
 :root{
-    --card-x: 300px;
-    --card-y: 200px;
+    --card-y: 300px;
+    --card-x: 200px;
 }
 
 .card-container{
@@ -9,9 +9,10 @@
     perspective: 700px;
 }
 
+
 .card{
-    height: var(--card-x);
-    width: var(--card-y);
+    height: var(--card-y);
+    width: var(--card-x);
     margin: 10px;
     
     border: solid 5px black;
@@ -30,11 +31,29 @@
 .card-container:hover>.card{
     transform: translateZ(50px);
 }
+.card-container.cover>.card{
+    transform: rotateY(180deg);
+}
+.card-container.reveal>.card::after{
+    content: "";
+    position: absolute;
+    display: block;
+    width: var(--card-x);
+    height: var(--card-y);
+
+    transform: translateZ(0.025px);
+}
+.card-container.reveal.green>.card::after{
+    background-color: rgba(0,255,0,0.2);
+}
+.card-container.reveal.red>.card::after{
+    background-color: rgba(255,0,0,0.2);
+}
 
 img{
     position: absolute;
-    height: var(--card-x);
-    width: var(--card-y);
+    height: var(--card-y);
+    width: var(--card-x);
     object-fit:cover;   
 }
 .card-name{

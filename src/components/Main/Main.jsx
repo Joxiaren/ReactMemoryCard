@@ -12,10 +12,11 @@ function Main({ gameName }){
 
     const [cards, setCards] = useState([]);
     const [score, setScore] = useState(0);
-    
+    const [gameOver, setGameOver] = useState('gameon');
+    const [cardState, setCardState] = useState("");
     useEffect(() => {
         console.log(`gameName ${gameName}`);
-        fetch(`${config.localApiAddress}/bossInfo/${gameName}`)
+        fetch(`${config.apiAddress}/bossInfo/${gameName}`)
         .then(res => res.json())
         .then(json => {
             console.log(json);
@@ -27,16 +28,32 @@ function Main({ gameName }){
         }
     }, [gameName])
 
-    let cardClick = (card) => {
-        console.log('clicked');
-        //animation
+    let restart = () => {
+        setGameOver('gameon');
+        setCardState('');
+        selectedCards = {};
+        setScore(0);
+        winCondition = false;
+        nextMove();
+    }
+    let cardClick = (e, card) => {
         if(card in selectedCards){
-            selectedCards = {};
+
+            setCardState("reveal");
+            setGameOver('gameover');
+            setTimeout(() => {
+                restart();
+            }, 6000);
         }
         else{
             selectedCards[card] = "selected";
-        }
 
+            setScore(Object.keys(selectedCards).length);
+            setCardState("cover");
+            setTimeout(() => nextMove(), 350);
+        }
+    }   
+    let nextMove = () =>{
         let scoreCalculate = Object.keys(selectedCards).length;
         let newCards = shuffleCards([...cards]);
         
@@ -51,9 +68,7 @@ function Main({ gameName }){
                     break;
                 }
             }
-    
             if(!fair){
-                console.log("mroao sam aaaaa");
                 let i = 10;
                 while(newCards[i].name in selectedCards) i++;
                 [newCards[0], newCards[i]] = [newCards[i], newCards[0]];
@@ -62,21 +77,28 @@ function Main({ gameName }){
                 first10.map((elem, index) => newCards[index] = elem);
             }
         }
+        setTimeout(()=>{
+            setCardState("");
+        }, 350);
+        
         setCards(newCards);
-        setScore(scoreCalculate);
-    }   
+    }
+
     
     if(winCondition) return (
         <main>
-            <div className='win'>VICTORY ACHIEVED</div>
+            <div className="win-container" >
+                <div className='win'>VICTORY ACHIEVED</div>
+                <button className='restart' onClick={()=>restart()}>Restart</button>
+            </div>
         </main>
     );
     return (
-        <main>
+        <main className={gameOver}>
             <div className='scoreboard'>Score: {score}</div>
             {
             cards.slice(0,10).map((card) => (
-                <Card key={card.name} name={card.name} imageFront={`${config.localApiAddress}/${card.image}`} imageBack={`/covers/${gameName}.jpg`} onclick={cardClick}/>
+                <Card key={card.name} name={card.name} imageFront={`${config.apiAddress}/${card.image}`} imageBack={`/covers/${gameName}.jpg`} selected={card.name in selectedCards} onclick={cardClick} state={cardState}/>
             ))}
         </main>
     );
