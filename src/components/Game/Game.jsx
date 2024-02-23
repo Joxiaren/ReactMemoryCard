@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import './main.css';
+import './game.css';
 import config from '../../../conifg.json';
 
 import Card from '../Card/Card';
@@ -8,18 +8,18 @@ import shuffleArray from '../../scripts/shuffle';
 
 let selectedCards = {};
 let winCondition = false;
-function Main({ gameName }){
+let loading = true;
+function Game({ gameName }){
 
     const [cards, setCards] = useState([]);
     const [score, setScore] = useState(0);
     const [gameOver, setGameOver] = useState('gameon');
     const [cardState, setCardState] = useState("");
     useEffect(() => {
-        console.log(`gameName ${gameName}`);
-        fetch(`${config.apiAddress}/bossInfo/${gameName}`)
+        fetch(`${config.localApiAddress}/bossInfo/${gameName}`)
         .then(res => res.json())
         .then(json => {
-            console.log(json);
+            loading = false;
             setCards(shuffleCards(json));
         });
 
@@ -31,9 +31,10 @@ function Main({ gameName }){
     let restart = () => {
         setGameOver('gameon');
         setCardState('');
-        selectedCards = {};
         setScore(0);
+        selectedCards = {};
         winCondition = false;
+        
         nextMove();
     }
     let cardClick = (e, card) => {
@@ -84,23 +85,23 @@ function Main({ gameName }){
         setCards(newCards);
     }
 
-    
-    if(winCondition) return (
-        <main>
-            <div className="win-container" >
-                <div className='win'>VICTORY ACHIEVED</div>
-                <button className='restart' onClick={()=>restart()}>Restart</button>
-            </div>
-        </main>
-    );
     return (
-        <main className={gameOver}>
-            <div className='scoreboard'>Score: {score}</div>
-            {
-            cards.slice(0,10).map((card) => (
-                <Card key={card.name} name={card.name} imageFront={`${config.apiAddress}/${card.image}`} imageBack={`/covers/${gameName}.jpg`} selected={card.name in selectedCards} onclick={cardClick} state={cardState}/>
-            ))}
-        </main>
+        <div className='game'>
+                {gameOver == "gameover" && (<div className='gameover'>DUM DUM</div>)}
+                {loading && (<div>loading</div>)}
+                {!loading && winCondition && ( 
+                    <div className="win-container" >
+                        <div className='win'>VICTORY ACHIEVED</div>
+                        <button className='restart' onClick={()=>restart()}>Restart</button>
+                    </div>
+                )}
+                {!loading && !winCondition && ( 
+                    <div className='scoreboard'>Score: {score}</div>
+                )}
+                {!loading && !winCondition && cards.slice(0,10).map((card) => (
+                    <Card key={card.name} name={card.name} imageFront={`${config.localApiAddress}/${card.image}`} imageBack={`/covers/${gameName}.jpg`} selected={card.name in selectedCards} onclick={cardClick} state={cardState}/>
+                ))}
+        </div>
     );
 }
 
@@ -108,4 +109,4 @@ function shuffleCards(cards){
     shuffleArray(cards, 10);
     return cards;
 }
-export default Main;
+export default Game;
