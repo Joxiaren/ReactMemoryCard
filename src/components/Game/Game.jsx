@@ -16,7 +16,7 @@ function Game({ gameName }){
     const [gameOver, setGameOver] = useState('gameon');
     const [cardState, setCardState] = useState("");
     useEffect(() => {
-        fetch(`${config.localApiAddress}/bossInfo/${gameName}`)
+        fetch(`${config.apiAddress}/bossInfo/${gameName}`)
         .then(res => res.json())
         .then(json => {
             loading = false;
@@ -99,7 +99,7 @@ function Game({ gameName }){
                     <div className='scoreboard'>Score: {score}</div>
                 )}
                 {!loading && !winCondition && cards.slice(0,10).map((card) => (
-                    <Card key={card.name} name={card.name} imageFront={`${config.localApiAddress}/${card.image}`} imageBack={`/covers/${gameName}.jpg`} selected={card.name in selectedCards} onclick={cardClick} state={cardState}/>
+                    <Card key={card.name} name={card.name} imageFront={`${config.apiAddress}/${card.image}`} imageBack={`/covers/${gameName}.jpg`} selected={card.name in selectedCards} onclick={cardClick} state={cardState}/>
                 ))}
         </div>
     );
