@@ -9,15 +9,24 @@ import shuffleArray from '../../scripts/shuffle';
 let selectedCards = {};
 let winCondition = false;
 let loading = true;
-function Game({ gameName }){
+function Game({ gameName, highScore, backCB }){
 
     const [cards, setCards] = useState([]);
     const [score, setScore] = useState(0);
     const [gameOver, setGameOver] = useState('gameon');
     const [cardState, setCardState] = useState("");
     useEffect(() => {
-        fetch(`${config.apiAddress}/bossInfo/${gameName}`)
-        .then(res => res.json())
+        fetch(`${config.apiAddress}/bossInfo/${gameName}`, {
+            headers: {
+                "x-api-key": process.env.REACT_APP_API_KEY
+            }
+        })
+        .then(res => {
+            if(res.ok) return res.json();
+            console.log(res.status);
+            console.log(res.statusText);
+            alert('Connection to server failed');
+        })
         .then(json => {
             loading = false;
             setCards(shuffleCards(json));
@@ -87,8 +96,9 @@ function Game({ gameName }){
 
     return (
         <div className='game'>
-                {gameOver == "gameover" && (<div className='gameover'>DUM DUM</div>)}
-                {loading && (<div>loading</div>)}
+            <div className="backButtonContainer"> <div className='backButton' onClick={()=>{console.log('wtf'); backCB()}}>Back</div> </div>
+                {gameOver == "gameover" && (<div className='gameover'>GAME OVER</div>)}
+                {loading && (<div className='loading'>loading</div>)}
                 {!loading && winCondition && ( 
                     <div className="win-container" >
                         <div className='win'>VICTORY ACHIEVED</div>

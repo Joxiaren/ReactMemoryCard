@@ -10,13 +10,13 @@ function MainMenu(){
         <main>
             {currentGame === 0 && (
                 <div className="titles">
-                    <img src="/title/darksoulstitle.webp" alt="" onClick={()=>setCurrentGame(1)}/>
-                    <img src="/title/darksouls2title.webp" alt="" onClick={()=>setCurrentGame(2)}/>
-                    <img src="/title/darksouls3title.webp" alt="" onClick={()=>setCurrentGame(3)}/>
-                    <div className='titleAll' onClick={()=>setCurrentGame(4)}>TRILOGY</div>
+                    <div className='title' onClick={()=>setCurrentGame(1)}>DARK SOULS</div>
+                    <div className='title' onClick={()=>setCurrentGame(2)}>DARK SOULS II</div>
+                    <div className='title' onClick={()=>setCurrentGame(3)}>DARK SOULS III</div>
+                    <div className='title' onClick={()=>setCurrentGame(4)}>TRILOGY</div>
                 </div>
             )}
-            {currentGame !== 0 && (<Game gameName={ games[currentGame-1] }/>)}
+            {currentGame !== 0 && (<Game gameName={ games[currentGame - 1] } backCB={()=>setCurrentGame(0)}/>)}
         </main>
     )
 }
