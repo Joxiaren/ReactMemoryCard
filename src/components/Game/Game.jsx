@@ -23,9 +23,7 @@ function Game({ gameName, highScore, backCB }){
         })
         .then(res => {
             if(res.ok) return res.json();
-            console.log(res.status);
-            console.log(res.statusText);
-            alert('Connection to server failed');
+            alert(`Error code: ${res.status}, Error text: ${res.statusText}`);
         })
         .then(json => {
             loading = false;
@@ -96,7 +94,7 @@ function Game({ gameName, highScore, backCB }){
 
     return (
         <div className='game'>
-            <div className="backButtonContainer"> <div className='backButton' onClick={()=>{console.log('wtf'); backCB()}}>Back</div> </div>
+            <div className="backButtonContainer"> <div className='backButton' onClick={()=>{backCB()}}>Back</div> </div>
                 {gameOver == "gameover" && (<div className='gameover'>GAME OVER</div>)}
                 {loading && (<div className='loading'>loading</div>)}
                 {!loading && winCondition && ( 
