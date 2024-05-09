@@ -96,7 +96,7 @@ function Game({ gameName, highScore, backCB }){
         <div className='game'>
             <div className="backButtonContainer"> <div className='backButton' onClick={()=>{backCB()}}>Back</div> </div>
                 {gameOver == "gameover" && (<div className='gameover'>GAME OVER</div>)}
-                {loading && (<div className='loading'>loading</div>)}
+                {loading && (<div className='loading'>loading (may take a couple of minutes)</div>)}
                 {!loading && winCondition && ( 
                     <div className="win-container" >
                         <div className='win'>VICTORY ACHIEVED</div>
